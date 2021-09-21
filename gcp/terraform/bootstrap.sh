@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -eu
 
 ##########
 # this will create a new project in GCP, and prepare the service account for it as well as necessary API's
@@ -29,7 +29,8 @@ fi
 echo "Creating new gcloud project for terraform"
 gcloud projects create ${TF_VAR_project} \
     --organization ${TF_VAR_org_id} \
-    --set-as-default
+    --set-as-default \
+    || echo 'Project already exists. Proceeding...'
 
 echo "Linking new gcloud project to billing account"
 gcloud beta billing projects link ${TF_VAR_project}  \
@@ -37,7 +38,8 @@ gcloud beta billing projects link ${TF_VAR_project}  \
 
 echo "Creating iam service account for terraform"
 gcloud iam service-accounts create terraform \
-  --display-name "Terraform admin account"
+  --display-name "Terraform admin account" \
+    || echo 'Service account "terraform" already exists. Proceeding...'
 
 echo "Creating gcloud keys on filesystem for terraform"
 gcloud iam service-accounts keys create ${TF_CREDS} \

@@ -4,9 +4,10 @@ variable replicas {
 
   default = {
     zcashd-archivenode         = 1
-    zcashd-fullnode            = 0
-    zcashd-privatenode         = 0 
-    zebrad-archivenode         = 1 
+    zcashd-indexnode           = 1
+    zcashd-fullnode            = 1
+    zcashd-privatenode         = 1
+    zebrad-archivenode         = 0
   }
 }
 
@@ -16,6 +17,7 @@ variable instance_types {
 
   default = {
     zcashd-archivenode         = "n1-standard-2"
+    zcashd-indexnode           = "n1-standard-2"
     zcashd-fullnode            = "n1-standard-2"
     zcashd-privatenode         = "n1-standard-2"
     zebrad-archivenode         = "n1-standard-2"
@@ -72,6 +74,12 @@ variable "data_disk_name" {
   default = "zcashdata"
 }
 
+variable "index_data_disk_name" {
+  type = string
+  description = "name of disk for persisting the Zcash blockchain with txindex=1"
+  default = "zcashindexdata"
+}
+
 variable "zebra_params_disk_name" {
   type = string
   description = "name of disk for persisting the Zcash parameters"
@@ -84,7 +92,7 @@ variable "zebra_data_disk_name" {
   default = "zebra-data"
 }
 
-variable "boot_disk_size" { 
+variable "boot_disk_size" {
   type = number
   description = "Size (in GB) of the ephemeral boot disk used for all instances"
   default = 10

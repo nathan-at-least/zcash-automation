@@ -134,6 +134,22 @@ module "zcashd-archivenode" {
   boot_disk_size                 = var.boot_disk_size
 }
 
+module "zcashd-indexnode" {
+  source = "./modules/zcashd-indexnode"
+  # variables
+  project                        = var.project
+  network_name                   = var.network_name
+  service_account_scopes         = var.service_account_scopes
+  region                         = var.region
+  zone                           = var.zone
+  params_disk_name               = var.params_disk_name
+  index_data_disk_name           = var.index_data_disk_name
+  GCP_DEFAULT_SERVICE_ACCOUNT    = var.GCP_DEFAULT_SERVICE_ACCOUNT
+  indexnode_count                = var.replicas["zcashd-indexnode"]
+  instance_type                  = var.instance_types["zcashd-indexnode"]
+  boot_disk_size                 = var.boot_disk_size
+}
+
 module "zebradd-archivenode" {
   source = "./modules/zebrad-archivenode"
   # variables
@@ -142,8 +158,8 @@ module "zebradd-archivenode" {
   service_account_scopes         = var.service_account_scopes
   region                         = var.region
   zone                           = var.zone
-  params_disk_name               = var.zebra_params_disk_name  #"zebra-cargo"  
-  data_disk_name                 = var.zebra_data_disk_name    #"zebra-data" 
+  params_disk_name               = var.zebra_params_disk_name  #"zebra-cargo"
+  data_disk_name                 = var.zebra_data_disk_name    #"zebra-data"
   GCP_DEFAULT_SERVICE_ACCOUNT    = var.GCP_DEFAULT_SERVICE_ACCOUNT
   archivenode_count              = var.replicas["zebrad-archivenode"]
   instance_type                  = var.instance_types["zebrad-archivenode"]
